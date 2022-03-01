@@ -1,0 +1,89 @@
+use El_massar_Hotel;
+CREATE TABLE client(id int NOT NULL PRIMARY KEY , 
+               nom varchar (255)  NOT NULL,
+               prenom varchar (255) NOT NULL,
+               adresse varchar (255) NOT NULL,
+               ville varchar (255) NOT NULL,
+               code_postale varchar (255) NOT NULL,
+               pays varchar (255) NOT NULL,
+               telephone varchar (255) NOT NULL,
+               email varchar (255) NOT NULL 
+                );
+                              
+
+CREATE TABLE consommation(numero_consommation int primary key NOT NULL,
+               date_consommation date NOT NULL,
+               heure_consommation time NOT NULL,
+               id_client_fk int ,
+FOREIGN KEY (id_client_fk) REFERENCES client(id)
+            );
+
+
+
+CREATE TABLE prestation(code_prestation int primary key NOT NULL,
+               designation_prestation varchar (255) NOT NULl
+                );			       
+
+
+CREATE TABLE conserner(id int primary key NOT NULL,
+              numero_consommation_fk int ,
+              code_prestation_fk int,
+FOREIGN KEY (numero_consommation_fk) REFERENCES consommation(numero_consommation),
+FOREIGN KEY (code_prestation_fk) REFERENCES prestation(code_prestation)
+
+
+);
+
+
+CREATE TABLE categories(code_categories int primary key NOT NULL,
+               description varchar (255) NOT NULl
+                );
+               
+CREATE TABLE classe(nombre_etoiles int primary key NOT NULL,
+                );	
+				
+CREATE TABLE hotels(numero_H int primary key  NOT NULL , 
+               nom varchar (255)  NOT NULL,
+               prenom varchar (255) NOT NULL,
+               adresse_H varchar (255) NOT NULL,
+               CPH varchar (255) NOT NULL,
+               telephone_H varchar (255) NOT NULL,
+              nombre_etoiles_fk int ,
+FOREIGN KEY (nombre_etoiles_fk) REFERENCES classe(nombre_etoiles)
+               );
+
+
+CREATE TABLE offre(prix_presentation int primary key  NOT NULL,
+                  numero_H_fk int ,
+                  code_prestation_fk int ,
+FOREIGN KEY (numero_H_fk) REFERENCES hotels(numero_H),
+FOREIGN KEY (code_prestation_fk) REFERENCES prestation(code_prestation)  
+);
+
+
+CREATE TABLE tarifer(id_tarifer int primary key  NOT NULL,
+                  nombre_etoiles_fk int,
+                  code_categories_fk int,
+FOREIGN KEY (nombre_etoiles_fk) REFERENCES classe(nombre_etoiles),
+FOREIGN KEY (code_categories_fk) REFERENCES categories(code_categories)
+              
+			  );
+
+CREATE TABLE chambres(numero_chambre int primary key  NOT NULL,
+                  telephone_chambre varchar(255) NOT NULL,
+                  code_categories_fk int ,
+                  numero_H_fk int ,
+FOREIGN KEY (code_categories_fk) REFERENCES categories(code_categories),
+FOREIGN KEY (numero_H_fk) REFERENCES hotels(numero_H)
+               );			    
+
+CREATE TABLE reservation(numero_resevation int primary key NOT NULL , 
+               date_debut date NOT NULL,
+               date_fin date NOT NULL,
+               date_payeArrhes date NOT NULL,
+               montant_payeArrhes date NOT NULL,
+              numero_chambre_fk int ,
+			  id_client_fk int ,
+FOREIGN KEY (numero_chambre_fk) REFERENCES chambres(numero_chambre),
+FOREIGN KEY (id_client_fk) REFERENCES client(id)
+               );
